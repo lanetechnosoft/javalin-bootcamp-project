@@ -56,4 +56,5 @@ public class Main {
         });
         app.config.addStaticFiles("/webapp");
     }
+
 }

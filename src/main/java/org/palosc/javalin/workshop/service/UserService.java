@@ -24,6 +24,14 @@ public class UserService {
     public User getUserByUsername(String username) {
         return repository.getUserByUsername(username);
     }
+    
+    public long getUserIdForToken(String token){
+        User found = TOKENS.get(token);
+        if(found!=null){
+            return found.getUserId();
+        }
+        return -1l;
+    }
 
     public boolean authenticate(String username, String password) {
         User u = repository.getUserByUsername(username);

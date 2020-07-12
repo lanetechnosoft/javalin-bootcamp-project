@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.palosc.javalin.workshop.model.TodoItem;
 
 /**
@@ -45,5 +46,26 @@ public class TodoItemRepository {
     
     public void deleteTodoItem(long id){
         MAP.remove(id);
+    }
+
+    public List<TodoItem> findUserItems(long userId) {
+        return MAP.values().stream().filter(item-> item.getUserId() == userId).collect(Collectors.toList());
+    }
+
+    public TodoItem getUserItemById(Long itemId, long userId) {
+        return MAP.values().stream().filter(item -> item.getUserId() == userId && item.getItemId() == itemId).findFirst().orElse(null);
+    }
+
+    public void updateUserItemById(Long itemId, TodoItem item, long userId) {
+        if(getUserItemById(itemId,userId) !=null){
+            item.setUserId(userId);
+            this.updateTodoItem(item,itemId);
+        }
+    }
+
+    public void deleteUserItemById(Long itemId, long userId) {
+        if(getUserItemById(itemId,userId)!=null){
+            deleteTodoItem(itemId);
+        }
     }
 }

@@ -14,6 +14,7 @@ import java.util.Objects;
 public class TodoItem {
     
     private long itemId;
+    private long userId;
     private String title;
     private String description;
     private boolean done = false;
@@ -35,6 +36,14 @@ public class TodoItem {
         this.itemId = itemId;
     }
 
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+    
     public String getTitle() {
         return title;
     }

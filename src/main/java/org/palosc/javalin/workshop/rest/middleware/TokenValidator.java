@@ -28,7 +28,7 @@ public class TokenValidator {
         if (permittedRoles.isEmpty() || permittedRoles.contains(UserRole.NONE)) {// empty and none role, dont validate
             handler.handle(ctx);//continue request
         } else {
-            String token = getTokenFromContext(ctx);// get token from Header
+            String token = ContextUtils.getTokenFromContext(ctx);// get token from Header
             User foundUser = service.validateToken(token);//validate token
             if (foundUser == null) {
                 throw new UnauthorizedResponse();//if token isnt valid, throw error
@@ -42,12 +42,5 @@ public class TokenValidator {
         }
     }
 
-    private String getTokenFromContext(Context ctx) {
-        String authHeader = ctx.header("Authorization");// get header
-        if (StringUtils.isBlank(authHeader) || !StringUtils.contains(authHeader, "Bearer")) {//chech format
-            throw new UnauthorizedResponse();
-        } else {
-            return authHeader.substring(6).trim().strip();// extract token
-        }
-    }
+   
 }

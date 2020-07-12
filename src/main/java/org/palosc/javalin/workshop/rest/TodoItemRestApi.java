@@ -7,7 +7,9 @@ package org.palosc.javalin.workshop.rest;
 
 import io.javalin.http.Context;
 import org.palosc.javalin.workshop.model.TodoItem;
+import org.palosc.javalin.workshop.rest.middleware.ContextUtils;
 import org.palosc.javalin.workshop.service.TodoItemService;
+import org.palosc.javalin.workshop.service.UserService;
 
 /**
  *
@@ -16,33 +18,31 @@ import org.palosc.javalin.workshop.service.TodoItemService;
 public class TodoItemRestApi {
 
     private final TodoItemService service = new TodoItemService();
-
     public void get(Context ctx) {
-        ctx.json(service.getAllItems());
+        ctx.json(service.getAllItemsForUser(ContextUtils.getUserIdFromContext(ctx)));
     }
 
     public void getById(Context ctx) {
-        TodoItem found = service.getItemById(ctx.pathParam("id", Long.class).get());
+        TodoItem found = service.getItemByIdForUser(ctx.pathParam("id", Long.class).get(),ContextUtils.getUserIdFromContext(ctx));
         if (found != null) {
             ctx.json(found);
         } else {
             ctx.status(404);
         }
-
     }
 
     public void post(Context ctx) {
-        service.createTodoItem(ctx.bodyAsClass(TodoItem.class));
+        service.createTodoItemForUser(ctx.bodyAsClass(TodoItem.class),ContextUtils.getUserIdFromContext(ctx));
         ctx.status(200);
     }
 
     public void put(Context ctx) {
-        service.updateTodoItem(ctx.bodyAsClass(TodoItem.class), ctx.pathParam("id", Long.class).get());
+        service.updateTodoItemForUser(ctx.bodyAsClass(TodoItem.class), ctx.pathParam("id", Long.class).get(),ContextUtils.getUserIdFromContext(ctx));
         ctx.status(200);
     }
 
     public void delete(Context ctx) {
-        service.deleteTodoItem(ctx.pathParam("id", Long.class).get());
+        service.deleteTodoItemForUser(ctx.pathParam("id", Long.class).get(),ContextUtils.getUserIdFromContext(ctx));
         ctx.status(200);
     }
 }

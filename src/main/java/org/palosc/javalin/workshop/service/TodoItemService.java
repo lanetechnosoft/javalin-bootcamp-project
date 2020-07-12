@@ -36,4 +36,25 @@ public class TodoItemService {
     public void deleteTodoItem(long id) {
         repo.deleteTodoItem(id);
     }
+
+    public Object getAllItemsForUser(long userIdForToken) {
+        return repo.findUserItems(userIdForToken);
+    }
+
+    public TodoItem getItemByIdForUser(Long itemId, long userId) {
+        return repo.getUserItemById(itemId,userId);
+    }
+
+    public void createTodoItemForUser(TodoItem item, long userId) {
+        item.setUserId(userId);
+        createTodoItem(item);
+    }
+
+    public void updateTodoItemForUser(TodoItem item, Long itemId, long userId) {
+        repo.updateUserItemById(itemId, item ,userId);
+    }
+
+    public void deleteTodoItemForUser(Long itemId, long userId) {
+        repo.deleteUserItemById(itemId,userId);
+    }
 }
