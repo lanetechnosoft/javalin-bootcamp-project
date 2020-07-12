@@ -1,0 +1,22 @@
+[Unit]
+Description=Todo List Java REST Service
+
+[Service]
+
+WorkingDirectory=/opt/todoapi
+
+
+#executable is a bash script which calls jar file
+ExecStart=/opt/todoapi/start.sh
+
+SuccessExitStatus=143
+
+TimeoutStopSec=10
+
+Restart=on-failure
+
+RestartSec=5
+
+[Install]
+
+WantedBy=multi-user.target

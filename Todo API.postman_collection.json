@@ -8,6 +8,16 @@
 		{
 			"name": "Get All Todo Items",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "kNO4yq7I5R4WiplqxH0ocE8zldPRkv",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -24,19 +34,87 @@
 			"response": []
 		},
 		{
-			"name": "Get Todo Item By Id",
+			"name": "Sign Up",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"testuser3\",\n    \"password\":\"testpassword\",\n    \"role\":\"USER\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "localhost:7000/todo/1",
+					"raw": "localhost:7000/auth/signup",
 					"host": [
 						"localhost"
 					],
 					"port": "7000",
 					"path": [
-						"todo",
-						"1"
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Log In",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"testuser3\",\n    \"password\":\"testpassword\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7000/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"testuser\",\n    \"password\":\"testpassword\",\n    \"role\":\"USER\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7000/auth/users",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"auth",
+						"users"
 					]
 				}
 			},
@@ -76,10 +154,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "",
+					"raw": "{\n    \"title\":\"Say Hi\",\n    \"description\":\"We all Deserve it\"\n}",
 					"options": {
 						"raw": {
-							"language": "javascript"
+							"language": "json"
 						}
 					}
 				},
@@ -103,15 +181,26 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:7000/todo/1",
+					"raw": "localhost:7000/todo/2",
 					"host": [
 						"localhost"
 					],
 					"port": "7000",
 					"path": [
 						"todo",
-						"1"
+						"2"
 					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sign Up",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
 				}
 			},
 			"response": []

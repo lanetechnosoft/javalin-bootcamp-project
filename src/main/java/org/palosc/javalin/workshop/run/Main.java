@@ -12,7 +12,13 @@ import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
 import static io.javalin.apibuilder.ApiBuilder.put;
 import static io.javalin.core.security.SecurityUtil.roles;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.jdbi.v3.core.Jdbi;
+import org.mariadb.jdbc.MariaDbDataSource;
 import org.palosc.javalin.workshop.model.UserRole;
+import org.palosc.javalin.workshop.repository.JdbiManager;
 import org.palosc.javalin.workshop.rest.AuthenticationRestApi;
 import org.palosc.javalin.workshop.rest.TodoItemRestApi;
 import org.palosc.javalin.workshop.rest.middleware.TokenValidator;
@@ -24,6 +30,7 @@ import org.palosc.javalin.workshop.rest.middleware.TokenValidator;
 public class Main {
 
     public static void main(String[] args) {
+        prepareDatasource();
         TodoItemRestApi todoItems = new TodoItemRestApi();
         TokenValidator validator = new TokenValidator();
         AuthenticationRestApi authentication = new AuthenticationRestApi();
@@ -57,4 +64,16 @@ public class Main {
         app.config.addStaticFiles("/webapp");
     }
 
+     private static void prepareDatasource() {
+        try {
+            MariaDbDataSource source = new MariaDbDataSource();
+            source.setDatabaseName("todoapi");
+            source.setUserName("todoapi");
+            source.setPassword("todoapi");
+            source.setServerName("localhost");
+            JdbiManager.set(Jdbi.create(source));
+        } catch (SQLException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

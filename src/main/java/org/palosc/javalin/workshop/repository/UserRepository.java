@@ -5,11 +5,7 @@
  */
 package org.palosc.javalin.workshop.repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import org.apache.commons.lang3.StringUtils;
 import org.palosc.javalin.workshop.model.User;
 
 /**
@@ -17,27 +13,31 @@ import org.palosc.javalin.workshop.model.User;
  * @author tareq
  */
 public class UserRepository {
-    private static final Map<Long,User> USERS = new HashMap<>();
-    private static long COUNTER = 0;
 
-    private static long getNextId(){
-        COUNTER = COUNTER +1;
-        return COUNTER;
+    private static final String LIST_USERS = "SELECT * FROM TodoUser";
+    private static final String GET_USER_BY_USERNAME = "SELECT * From TodoUser WHERE username=:username";
+    private static final String INSERT_USER = "INSERT INTO TodoUser (username,password,role) VALUES (:username,:password,:role)";
+
+
+    public List<User> getAllUsers() {
+        return JdbiManager.get().withHandle(handle -> handle.createQuery(LIST_USERS)
+                .mapToBean(User.class)
+                .list());
     }
-    
-    public List<User> getAllUsers(){
-        return new ArrayList<>(USERS.values());
+
+    public User getUserByUsername(String username) {
+        return JdbiManager.get().withHandle(handle -> handle.createQuery(GET_USER_BY_USERNAME)
+                .bind("username", username)
+                .mapToBean(User.class)
+                .one());
     }
-    public User getUserByUsername(String username){
-        return USERS.values().stream()
-                .filter(user-> StringUtils.equals(username, user.getUsername()))
-                .findFirst().orElse(null);
+
+    public void createUser(User user) {
+        JdbiManager.get().useHandle(handle -> handle.createUpdate(INSERT_USER)
+                .bind("username", user.getUsername())
+                .bind("password", user.getPassword())
+                .bind("role", user.getRole())
+                .execute());
     }
-    
-    public void createUser(User user){
-        user.setUserId(getNextId());
-        USERS.put(user.getUserId(), user);
-    }
-    
-    
+
 }
